@@ -17,6 +17,10 @@
     "import/prefer-default-export": "off",
     "comma-dangle": "off",
     "no-return-assign": "off",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+    "no-undef": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "no-underscore-dangle": "off"
   }
 }
