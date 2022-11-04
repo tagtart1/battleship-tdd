@@ -9,10 +9,11 @@ function Player(name) {
       _lastAttack = coordinate;
       return gameboard.receiveAttack(coordinate);
     },
-    launchRandomAttack(gameboard) {
-      const randomCoordinate = Math.floor(Math.random() * 11);
-      _lastAttack = randomCoordinate;
-      return gameboard.receiveAttack(randomCoordinate);
+
+    getRandomCoord() {
+      return `${Math.floor(Math.random() * 11)},${Math.floor(
+        Math.random() * 11
+      )}`;
     },
   };
 }
