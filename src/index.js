@@ -16,6 +16,8 @@ import {
   generateComputerGrid,
   hitSquareElement,
   missSquareElement,
+  renderMissedShots,
+  gameOverScreen,
 } from "./DOMHelper";
 
 const player1 = Player("Player1");
@@ -37,7 +39,7 @@ computerGameboard.placeShip([8, 7], 2, "y");
 computerGameboard.placeShip([8, 10], 3, "x");
 
 function gameOver(winner) {
-  console.log("gameover");
+  gameOverScreen(winner);
 }
 
 function handlePlayerTurn(coordinate) {
@@ -48,34 +50,33 @@ function handlePlayerTurn(coordinate) {
     );
     if (successfulAttack) {
       hitSquareElement(coordinate, document.querySelector(".computer-board"));
+      renderMissedShots(computerGameboard);
     } else {
       missSquareElement(coordinate, document.querySelector(".computer-board"));
     }
     canAttack = false;
     if (computerGameboard.allShipsSunk()) {
-      gameOver();
+      gameOver(player1);
       return;
     }
   } else return;
 
   setTimeout(() => {
-    let randomCoord = computer.getRandomCoord();
-    while (!playerGameboard.validCoordAttack(randomCoord)) {
-      randomCoord = computer.getRandomCoord();
-    }
-
-    const successfulComputerAttack = computer.launchAttack(
-      randomCoord,
-      playerGameboard
-    );
+    const successfulComputerAttack = computer.launchAIAttack(playerGameboard);
     if (successfulComputerAttack) {
-      hitSquareElement(randomCoord, document.querySelector(".player-board"));
+      hitSquareElement(
+        computer.lastAttackCoordinate,
+        document.querySelector(".player-board")
+      );
     } else {
-      missSquareElement(randomCoord, document.querySelector(".player-board"));
+      missSquareElement(
+        computer.lastAttackCoordinate,
+        document.querySelector(".player-board")
+      );
     }
 
-    if (player1.allShipsSunk()) {
-      gameOver();
+    if (playerGameboard.allShipsSunk()) {
+      gameOver(computer);
       return;
     }
     canAttack = true;

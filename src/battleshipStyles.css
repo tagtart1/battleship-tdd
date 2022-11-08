@@ -31,14 +31,20 @@ header {
   flex-wrap: wrap;
   background-color: aqua;
   gap: 2px;
+
+  counter-reset: bottom-row left-column;
 }
 
 .square {
   height: 45px;
   width: 45px;
   border: 1px solid black;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
   background-color: transparent;
+  user-select: none;
 }
 
 .square-ship {
@@ -48,9 +54,39 @@ header {
 .square-hit {
   background-color: red;
 }
+.square-row {
+  display: flex;
+  gap: 2px;
+  position: relative;
+  display: flex;
+
+  align-items: center;
+}
+
+.square-row::before {
+  counter-increment: left-column;
+  position: absolute;
+  left: -20px;
+  font-size: 12px;
+  content: counter(left-column);
+}
+
+.square-row:last-child .square::after {
+  position: absolute;
+  counter-increment: bottom-row;
+  top: 50px;
+  font-size: 12px;
+  content: counter(bottom-row, upper-alpha);
+}
 
 .square-miss {
   background-color: yellow;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 32px;
+  user-select: none;
 }
 
 .board-wrapper {

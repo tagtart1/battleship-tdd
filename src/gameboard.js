@@ -13,6 +13,57 @@ function Gameboard() {
   }
 
   const _board = createBoard(10);
+
+  function popSurroundingNodes(coordinate) {
+    const currentNode = coordinate.split(",");
+
+    if (
+      _board[`${Number(currentNode[0])},${Number(currentNode[1]) + 1}`] === null
+    ) {
+      console.log(currentNode);
+      _board[`${Number(currentNode[0])},${Number(currentNode[1]) + 1}`] = 0;
+    }
+    if (
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) + 1}`] ===
+      null
+    ) {
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) + 1}`] = 0;
+    }
+    if (
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) - 1}`] ===
+      null
+    ) {
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) - 1}`] = 0;
+    }
+    if (
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1])}`] === null
+    ) {
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1])}`] = 0;
+    }
+    if (
+      _board[`${Number(currentNode[0])},${Number(currentNode[1]) - 1}`] === null
+    ) {
+      _board[`${Number(currentNode[0])},${Number(currentNode[1]) - 1}`] = 0;
+    }
+    if (
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) - 1}`] ===
+      null
+    ) {
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) - 1}`] = 0;
+    }
+    if (
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1])}`] === null
+    ) {
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1])}`] = 0;
+    }
+    if (
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) + 1}`] ===
+      null
+    ) {
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) + 1}`] = 0;
+    }
+  }
+
   const _ships = [];
   return {
     get board() {
@@ -20,7 +71,7 @@ function Gameboard() {
     },
 
     placeShip(coordinate, shipLength, axis = "x") {
-      const newShip = Ship(shipLength);
+      const validCoords = [];
 
       for (let i = 0; i < shipLength; i += 1) {
         if (axis === "x") {
@@ -30,7 +81,8 @@ function Gameboard() {
           if (coordinate[0] + i > 10) {
             throw new Error("Out of bounds of board in that direction");
           }
-          _board[`${coordinate[0] + i},${coordinate[1]}`] = newShip;
+
+          validCoords.push(`${coordinate[0] + i},${coordinate[1]}`);
         } else {
           if (_board[`${coordinate[0]},${coordinate[1] + i}`] !== null) {
             throw new Error("Invalid Placement, already occupied location");
@@ -38,17 +90,20 @@ function Gameboard() {
           if (coordinate[1] + i > 10) {
             throw new Error("Out of bounds of board in that direction");
           }
-          _board[`${coordinate[0]},${coordinate[1] + i}`] = newShip;
+
+          validCoords.push(`${coordinate[0]},${coordinate[1] + i}`);
         }
       }
       // Do checks to make sure each ship has 1 radius from each other
-
+      const newShip = Ship(shipLength, validCoords);
+      for (let i = 0; i < validCoords.length; i += 1) {
+        _board[`${validCoords[i]}`] = newShip;
+      }
       _ships.push(newShip);
     },
     // Returns true on successful attack, false, upon a failed attack
     receiveAttack(coordinate) {
       const coord = _board[`${coordinate}`];
-      console.log(coord);
 
       // If the coord is null, its a miss, no ship
       if (coord === null) {
@@ -65,10 +120,19 @@ function Gameboard() {
         // check if the ship has sunk and pop all surrounding coords. Have DOMHelper rerender
         // the grid. To get sourround nodes, loops through the node by +1 or -1 and if the
         // surrounding node is NULL, make it 0
+        if (coord.isSunk()) {
+          for (let i = 0; i < coord.neighborCoordinates.length; i += 1) {
+            popSurroundingNodes(coord.neighborCoordinates[i]);
+          }
+        }
         return true;
       }
 
       return false;
+    },
+
+    get allShips() {
+      return _ships;
     },
 
     validCoordAttack(coordinate) {
@@ -93,6 +157,45 @@ function Gameboard() {
         if (_ships[i].isSunk() === false) return false;
       }
       return true;
+    },
+
+    getSurrounding4PointNeighbors(coordinate) {
+      const result = [];
+      const currentNode = coordinate.split(",");
+
+      if (
+        this.validCoordAttack(
+          `${Number(currentNode[0])},${Number(currentNode[1]) + 1}`
+        )
+      ) {
+        result.push(`${Number(currentNode[0])},${Number(currentNode[1]) + 1}`);
+      }
+
+      if (
+        this.validCoordAttack(
+          `${Number(currentNode[0]) + 1},${Number(currentNode[1])}`
+        )
+      ) {
+        result.push(`${Number(currentNode[0]) + 1},${Number(currentNode[1])}`);
+      }
+
+      if (
+        this.validCoordAttack(
+          `${Number(currentNode[0])},${Number(currentNode[1]) - 1}`
+        )
+      ) {
+        result.push(`${Number(currentNode[0])},${Number(currentNode[1]) - 1}`);
+      }
+
+      if (
+        this.validCoordAttack(
+          `${Number(currentNode[0]) - 1},${Number(currentNode[1])}`
+        )
+      ) {
+        result.push(`${Number(currentNode[0]) - 1},${Number(currentNode[1])}`);
+      }
+
+      return result;
     },
   };
 }
