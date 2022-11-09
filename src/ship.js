@@ -1,9 +1,10 @@
-function Ship(length, neighborCoordinates) {
+function Ship(length, neighborCoordinates, axis) {
   let _hits = 0;
 
   return {
     length,
     neighborCoordinates,
+    axis,
     get hits() {
       return _hits;
     },

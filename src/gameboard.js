@@ -18,47 +18,62 @@ function Gameboard() {
     const currentNode = coordinate.split(",");
 
     if (
-      _board[`${Number(currentNode[0])},${Number(currentNode[1]) + 1}`] === null
+      _board[`${Number(currentNode[0])},${Number(currentNode[1]) + 1}`] ===
+        null ||
+      _board[`${Number(currentNode[0])},${Number(currentNode[1]) + 1}`] === 2
     ) {
-      console.log(currentNode);
       _board[`${Number(currentNode[0])},${Number(currentNode[1]) + 1}`] = 0;
     }
     if (
       _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) + 1}`] ===
-      null
+        null ||
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) + 1}`] ===
+        2
     ) {
       _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) + 1}`] = 0;
     }
     if (
       _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) - 1}`] ===
-      null
+        null ||
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) - 1}`] ===
+        2
     ) {
       _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1]) - 1}`] = 0;
     }
     if (
-      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1])}`] === null
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1])}`] ===
+        null ||
+      _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1])}`] === 2
     ) {
       _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1])}`] = 0;
     }
     if (
-      _board[`${Number(currentNode[0])},${Number(currentNode[1]) - 1}`] === null
+      _board[`${Number(currentNode[0])},${Number(currentNode[1]) - 1}`] ===
+        null ||
+      _board[`${Number(currentNode[0])},${Number(currentNode[1]) - 1}`] === 2
     ) {
       _board[`${Number(currentNode[0])},${Number(currentNode[1]) - 1}`] = 0;
     }
     if (
       _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) - 1}`] ===
-      null
+        null ||
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) - 1}`] ===
+        2
     ) {
       _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) - 1}`] = 0;
     }
     if (
-      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1])}`] === null
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1])}`] ===
+        null ||
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1])}`] === 2
     ) {
       _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1])}`] = 0;
     }
     if (
       _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) + 1}`] ===
-      null
+        null ||
+      _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) + 1}`] ===
+        2
     ) {
       _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1]) + 1}`] = 0;
     }
@@ -70,36 +85,107 @@ function Gameboard() {
       return _board;
     },
 
+    setSurroundingNodesToBusy(coordinate) {
+      const currentNode = coordinate.split(",");
+
+      if (
+        _board[`${Number(currentNode[0])},${Number(currentNode[1]) + 1}`] ===
+        null
+      ) {
+        _board[`${Number(currentNode[0])},${Number(currentNode[1]) + 1}`] = 2;
+      }
+      if (
+        _board[
+          `${Number(currentNode[0]) + 1},${Number(currentNode[1]) + 1}`
+        ] === null
+      ) {
+        _board[
+          `${Number(currentNode[0]) + 1},${Number(currentNode[1]) + 1}`
+        ] = 2;
+      }
+      if (
+        _board[
+          `${Number(currentNode[0]) + 1},${Number(currentNode[1]) - 1}`
+        ] === null
+      ) {
+        _board[
+          `${Number(currentNode[0]) + 1},${Number(currentNode[1]) - 1}`
+        ] = 2;
+      }
+      if (
+        _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1])}`] ===
+        null
+      ) {
+        _board[`${Number(currentNode[0]) + 1},${Number(currentNode[1])}`] = 2;
+      }
+      if (
+        _board[`${Number(currentNode[0])},${Number(currentNode[1]) - 1}`] ===
+        null
+      ) {
+        _board[`${Number(currentNode[0])},${Number(currentNode[1]) - 1}`] = 2;
+      }
+      if (
+        _board[
+          `${Number(currentNode[0]) - 1},${Number(currentNode[1]) - 1}`
+        ] === null
+      ) {
+        _board[
+          `${Number(currentNode[0]) - 1},${Number(currentNode[1]) - 1}`
+        ] = 2;
+      }
+      if (
+        _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1])}`] ===
+        null
+      ) {
+        _board[`${Number(currentNode[0]) - 1},${Number(currentNode[1])}`] = 2;
+      }
+      if (
+        _board[
+          `${Number(currentNode[0]) - 1},${Number(currentNode[1]) + 1}`
+        ] === null
+      ) {
+        _board[
+          `${Number(currentNode[0]) - 1},${Number(currentNode[1]) + 1}`
+        ] = 2;
+      }
+    },
+
     placeShip(coordinate, shipLength, axis = "x") {
       const validCoords = [];
 
       for (let i = 0; i < shipLength; i += 1) {
         if (axis === "x") {
           if (_board[`${coordinate[0] + i},${coordinate[1]}`] !== null) {
-            throw new Error("Invalid Placement, already occupied location");
+            return false;
           }
           if (coordinate[0] + i > 10) {
-            throw new Error("Out of bounds of board in that direction");
+            return false;
           }
 
           validCoords.push(`${coordinate[0] + i},${coordinate[1]}`);
         } else {
           if (_board[`${coordinate[0]},${coordinate[1] + i}`] !== null) {
-            throw new Error("Invalid Placement, already occupied location");
+            return false;
           }
           if (coordinate[1] + i > 10) {
-            throw new Error("Out of bounds of board in that direction");
+            console.log("too long");
+            return false;
           }
 
           validCoords.push(`${coordinate[0]},${coordinate[1] + i}`);
         }
       }
-      // Do checks to make sure each ship has 1 radius from each other
-      const newShip = Ship(shipLength, validCoords);
+
+      const newShip = Ship(shipLength, validCoords, axis);
       for (let i = 0; i < validCoords.length; i += 1) {
         _board[`${validCoords[i]}`] = newShip;
       }
+
+      for (let i = 0; i < validCoords.length; i += 1) {
+        this.setSurroundingNodesToBusy(validCoords[i]);
+      }
       _ships.push(newShip);
+      return true;
     },
     // Returns true on successful attack, false, upon a failed attack
     receiveAttack(coordinate) {
@@ -149,6 +235,8 @@ function Gameboard() {
         return true;
       }
 
+      if (coord === 2) return true;
+
       return false;
     },
 
@@ -157,6 +245,76 @@ function Gameboard() {
         if (_ships[i].isSunk() === false) return false;
       }
       return true;
+    },
+
+    getValidEdgePointAttack(firstAttack, latestAttack) {
+      let coord1 = firstAttack.split(",");
+      let coord2 = latestAttack.split(",");
+      const result = [];
+
+      if (Math.abs(Number(coord1[1]) - Number(coord2[1])) !== 0) {
+        if (Number(coord1[1]) > Number(coord2[1])) {
+          coord1 = `${Number(coord1[0])},${Number(coord1[1]) + 1}`;
+          coord2 = `${Number(coord2[0])},${Number(coord2[1]) - 1}`;
+
+          if (this.validCoordAttack(coord1)) {
+            result.push(coord1);
+          }
+
+          if (this.validCoordAttack(coord2)) {
+            result.push(coord2);
+          }
+          console.log(result);
+          return result;
+        }
+        coord1 = `${Number(coord1[0])},${Number(coord1[1]) - 1}`;
+        coord2 = `${Number(coord2[0])},${Number(coord2[1]) + 1}`;
+
+        if (this.validCoordAttack(coord1)) {
+          result.push(coord1);
+        }
+
+        if (this.validCoordAttack(coord2)) {
+          result.push(coord2);
+        }
+        console.log(result);
+        return result;
+      }
+
+      if (Math.abs(Number(coord1[0]) - Number(coord2[0])) !== 0) {
+        if (Number(coord1[0]) > Number(coord2[0])) {
+          coord1 = `${Number(coord1[0]) + 1},${Number(coord1[1])}`;
+          coord2 = `${Number(coord2[0]) - 1},${Number(coord2[1])}`;
+          console.log(coord1);
+          if (this.validCoordAttack(coord1)) {
+            console.log(coord1);
+            result.push(coord1);
+          }
+
+          console.log(coord2);
+          if (this.validCoordAttack(coord2)) {
+            result.push(coord2);
+          }
+          console.log(result);
+          return result;
+        }
+        coord1 = `${Number(coord1[0]) - 1},${Number(coord1[1])}`;
+        coord2 = `${Number(coord2[0]) + 1},${Number(coord2[1])}`;
+        console.log(coord1);
+        if (this.validCoordAttack(coord1)) {
+          console.log(coord1);
+          result.push(coord1);
+        }
+        console.log(coord2);
+        if (this.validCoordAttack(coord2)) {
+          console.log(coord2);
+          result.push(coord2);
+        }
+        console.log(result);
+        return result;
+      }
+
+      return result;
     },
 
     getSurrounding4PointNeighbors(coordinate) {
@@ -196,6 +354,75 @@ function Gameboard() {
       }
 
       return result;
+    },
+
+    generateRandomShips() {
+      const XY = ["x", "y"];
+      let randomCoord = [
+        Math.floor(Math.random() * 11),
+        Math.floor(Math.random() * 11),
+      ];
+      let randomIndex = Math.floor(Math.random() * 2);
+      const shipSizes = [2, 3, 3, 4, 5];
+
+      while (shipSizes.length !== 0) {
+        while (!this.placeShip(randomCoord, shipSizes[0], XY[randomIndex])) {
+          randomCoord = [
+            Math.floor(Math.random() * 11),
+            Math.floor(Math.random() * 11),
+          ];
+          randomIndex = Math.floor(Math.random() * 2);
+        }
+        shipSizes.shift();
+      }
+    },
+
+    setSurroundingBusyNodesToNull(ship) {
+      const shipNeigbors = ship.neighborCoordinates;
+      for (let i = 0; i < shipNeigbors.length; i += 1) {
+        const temp = shipNeigbors[i].split(",");
+        if (_board[`${Number(temp[0])},${Number(temp[1]) + 1}`] === 2) {
+          _board[`${Number(temp[0])},${Number(temp[1]) + 1}`] = null;
+        }
+        if (_board[`${Number(temp[0]) + 1},${Number(temp[1]) + 1}`] === 2) {
+          _board[`${Number(temp[0]) + 1},${Number(temp[1]) + 1}`] = null;
+        }
+        if (_board[`${Number(temp[0]) + 1},${Number(temp[1]) - 1}`] === 2) {
+          _board[`${Number(temp[0]) + 1},${Number(temp[1]) - 1}`] = null;
+        }
+        if (_board[`${Number(temp[0]) + 1},${Number(temp[1])}`] === 2) {
+          _board[`${Number(temp[0]) + 1},${Number(temp[1])}`] = null;
+        }
+        if (_board[`${Number(temp[0])},${Number(temp[1]) - 1}`] === 2) {
+          _board[`${Number(temp[0])},${Number(temp[1]) - 1}`] = null;
+        }
+        if (_board[`${Number(temp[0]) - 1},${Number(temp[1]) - 1}`] === 2) {
+          _board[`${Number(temp[0]) - 1},${Number(temp[1]) - 1}`] = null;
+        }
+        if (_board[`${Number(temp[0]) - 1},${Number(temp[1])}`] === 2) {
+          _board[`${Number(temp[0]) - 1},${Number(temp[1])}`] = null;
+        }
+        if (_board[`${Number(temp[0]) - 1},${Number(temp[1]) + 1}`] === 2) {
+          _board[`${Number(temp[0]) - 1},${Number(temp[1]) + 1}`] = null;
+        }
+      }
+    },
+
+    // addBusyCoords() {
+    //   for (let i = 0; i <= 10; i += 1) {
+    //     for (let j = 0; j <= 10; j += 1) {
+    //       if (
+    //         typeof _board[`${i},${j}`] === "object" &&
+    //         _board[`${i},${j}`] !== null
+    //       ) {
+    //         this.setSurroundingNodesToBusy(`${i},${j}`);
+    //       }
+    //     }
+    //   }
+    // },
+
+    removeShip(coordinate) {
+      _board[coordinate] = null;
     },
   };
 }

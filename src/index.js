@@ -26,17 +26,8 @@ const playerGameboard = Gameboard();
 const computerGameboard = Gameboard();
 let canAttack = true;
 
-playerGameboard.placeShip([2, 8], 3, "y");
-playerGameboard.placeShip([5, 6], 4, "y");
-playerGameboard.placeShip([8, 1], 5, "y");
-playerGameboard.placeShip([8, 7], 2, "y");
-playerGameboard.placeShip([8, 10], 3, "x");
-
-computerGameboard.placeShip([2, 7], 3, "x");
-computerGameboard.placeShip([1, 2], 4, "y");
-computerGameboard.placeShip([8, 1], 5, "y");
-computerGameboard.placeShip([8, 7], 2, "y");
-computerGameboard.placeShip([8, 10], 3, "x");
+playerGameboard.generateRandomShips();
+computerGameboard.generateRandomShips();
 
 function gameOver(winner) {
   gameOverScreen(winner);
@@ -50,7 +41,7 @@ function handlePlayerTurn(coordinate) {
     );
     if (successfulAttack) {
       hitSquareElement(coordinate, document.querySelector(".computer-board"));
-      renderMissedShots(computerGameboard);
+      renderMissedShots(playerGameboard, computerGameboard);
     } else {
       missSquareElement(coordinate, document.querySelector(".computer-board"));
     }
@@ -68,6 +59,7 @@ function handlePlayerTurn(coordinate) {
         computer.lastAttackCoordinate,
         document.querySelector(".player-board")
       );
+      renderMissedShots(playerGameboard, computerGameboard);
     } else {
       missSquareElement(
         computer.lastAttackCoordinate,
@@ -83,7 +75,7 @@ function handlePlayerTurn(coordinate) {
   }, 1000);
 }
 
-generateGrid(100, document.querySelector(".player-board"));
+generateGrid(100, document.querySelector(".player-board"), playerGameboard);
 generateComputerGrid(
   100,
   document.querySelector(".computer-board"),

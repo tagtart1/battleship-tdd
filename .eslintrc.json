@@ -22,6 +22,8 @@
     "import/no-unresolved": "off",
     "import/extensions": "off",
     "no-underscore-dangle": "off",
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "no-loop-func": "off",
+    "no-param-reassign": "off"
   }
 }
