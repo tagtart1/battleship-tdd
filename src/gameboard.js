@@ -171,6 +171,7 @@ function Gameboard() {
             console.log("too long");
             return false;
           }
+          console.log(_board[`${coordinate[0]},${coordinate[1] + i}`]);
 
           validCoords.push(`${coordinate[0]},${coordinate[1] + i}`);
         }
@@ -408,18 +409,18 @@ function Gameboard() {
       }
     },
 
-    // addBusyCoords() {
-    //   for (let i = 0; i <= 10; i += 1) {
-    //     for (let j = 0; j <= 10; j += 1) {
-    //       if (
-    //         typeof _board[`${i},${j}`] === "object" &&
-    //         _board[`${i},${j}`] !== null
-    //       ) {
-    //         this.setSurroundingNodesToBusy(`${i},${j}`);
-    //       }
-    //     }
-    //   }
-    // },
+    addBusyCoords() {
+      for (let i = 0; i <= 10; i += 1) {
+        for (let j = 0; j <= 10; j += 1) {
+          if (
+            typeof _board[`${i},${j}`] === "object" &&
+            _board[`${i},${j}`] !== null
+          ) {
+            this.setSurroundingNodesToBusy(`${i},${j}`);
+          }
+        }
+      }
+    },
 
     removeShip(coordinate) {
       _board[coordinate] = null;

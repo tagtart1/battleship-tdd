@@ -51,6 +51,10 @@ header {
   background-color: blueviolet;
 }
 
+.square-invalid {
+  background-color: black;
+}
+
 .square-hit {
   background-color: red;
 }

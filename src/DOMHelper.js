@@ -48,7 +48,7 @@ export function generateGrid(size, parent, gameBoard) {
             axis: node.axis,
           };
           queueShip = gameBoard.board[square.dataset.coordinate];
-          gameBoard.setSurroundingBusyNodesToNull(queueShip);
+          // gameBoard.setSurroundingBusyNodesToNull(queueShip);
           console.log(gameBoard.board);
         }
       });
@@ -65,24 +65,28 @@ export function generateGrid(size, parent, gameBoard) {
               movingShipInfo.axis
             )
           ) {
-            console.log("tru");
             canPlace = true;
             queueShip = gameBoard.board[square.dataset.coordinate];
             renderPlayerBoard(gameBoard);
           } else {
             canPlace = false;
             queueShip = null;
+            square.classList.add("square-invalid");
           }
         }
       });
 
       square.addEventListener("mouseleave", () => {
+        square.classList.remove("square-invalid");
         if (isChangingShip && queueShip != null) {
           for (let k = 0; k < queueShip.neighborCoordinates.length; k += 1) {
             gameBoard.removeShip(queueShip.neighborCoordinates[k]);
           }
           gameBoard.setSurroundingBusyNodesToNull(queueShip);
           clearBoardVisual(gameBoard);
+
+          // Readd busy nodes to whole board
+          gameBoard.addBusyCoords();
         }
       });
     }
