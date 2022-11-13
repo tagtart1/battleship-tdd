@@ -13,6 +13,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 54px;
+  position: relative;
 }
 
 header {
@@ -96,4 +97,29 @@ header {
 .board-wrapper {
   display: flex;
   gap: 100px;
+  transition: all 0.3s;
+}
+
+.shift-y {
+  transform: translateY(-50px);
+}
+
+.axis-flip {
+  font-size: 36px;
+  font-weight: 200;
+  padding: 0px 24px;
+  border: 1px black solid;
+  cursor: pointer;
+}
+
+.axis-flip:active {
+  font-weight: bold;
+}
+
+.start-button {
+  font-size: 36px;
+  font-weight: 200;
+  padding: 0px 24px;
+  border: 1px black solid;
+  cursor: pointer;
 }

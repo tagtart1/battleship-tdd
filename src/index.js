@@ -18,6 +18,7 @@ import {
   missSquareElement,
   renderMissedShots,
   gameOverScreen,
+  toggleTurnUI,
 } from "./DOMHelper";
 
 const player1 = Player("Player1");
@@ -46,6 +47,7 @@ function handlePlayerTurn(coordinate) {
       missSquareElement(coordinate, document.querySelector(".computer-board"));
     }
     canAttack = false;
+    toggleTurnUI();
     if (computerGameboard.allShipsSunk()) {
       gameOver(player1);
       return;
@@ -72,6 +74,7 @@ function handlePlayerTurn(coordinate) {
       return;
     }
     canAttack = true;
+    toggleTurnUI();
   }, 1000);
 }
 

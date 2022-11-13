@@ -19,7 +19,7 @@ function Player(name) {
       while (!gameboard.validCoordAttack(randomCoord)) {
         randomCoord = this.getRandomCoord();
       }
-      console.log("yo");
+
       return this.launchAttack(randomCoord, gameboard);
     },
 
@@ -44,7 +44,7 @@ function Player(name) {
           _potentialAttacks = [];
           _firstAttackCoordinate = null;
           directionEstablished = false;
-          console.log("poop");
+
           return this.attackRandom(gameboard);
         }
         if (!directionEstablished) {
@@ -100,8 +100,6 @@ function Player(name) {
 
         _potentialAttacks.splice(randomIndex, 1);
         if (_potentialAttacks.length === 0) {
-          console.log("yoREDOING");
-
           _potentialAttacks = gameboard.getValidEdgePointAttack(
             _firstAttackCoordinate,
             _lastAttackCoordinate

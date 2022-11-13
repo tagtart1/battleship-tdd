@@ -192,8 +192,8 @@ function Gameboard() {
     receiveAttack(coordinate) {
       const coord = _board[`${coordinate}`];
 
-      // If the coord is null, its a miss, no ship
-      if (coord === null) {
+      // If the coord is null or busy, its a miss, no ship
+      if (coord === null || coord === 2) {
         _board[`${coordinate}`] = 0;
         return false;
       }
@@ -224,6 +224,7 @@ function Gameboard() {
 
     validCoordAttack(coordinate) {
       const coord = _board[`${coordinate}`];
+      console.log(coord);
       if (coord === 1 || coord === 0) {
         return false;
       }

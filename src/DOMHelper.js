@@ -2,16 +2,18 @@
 function addClickListener(element, callback) {
   element.addEventListener("click", () => {
     // Register the input on turn
+    if (!gameStarted) return;
 
     callback(element.dataset.coordinate);
   });
 }
-
+let gameStarted = false;
 let isChangingShip = false;
 let movingShipInfo = {};
 let queueShip = null;
 let canPlace = true;
 const axisFlipper = document.querySelector(".axis-flip");
+const startGameButton = document.querySelector(".start-button");
 
 axisFlipper.addEventListener("click", () => {
   if (movingShipInfo.axis === "x") {
@@ -19,6 +21,14 @@ axisFlipper.addEventListener("click", () => {
   } else {
     movingShipInfo.axis = "x";
   }
+});
+
+startGameButton.addEventListener("click", () => {
+  if (gameStarted) return;
+  gameStarted = true;
+  axisFlipper.remove();
+  startGameButton.textContent = "Your Turn";
+  startGameButton.style.cursor = "initial";
 });
 
 export function generateGrid(size, parent, gameBoard) {
@@ -33,7 +43,7 @@ export function generateGrid(size, parent, gameBoard) {
       row.appendChild(square);
 
       square.addEventListener("click", () => {
-        if (!canPlace) return;
+        if (!canPlace || gameStarted) return;
         const node = gameBoard.board[square.dataset.coordinate];
         if (isChangingShip) {
           // Confirm PLacement and wipe previous data
@@ -54,6 +64,7 @@ export function generateGrid(size, parent, gameBoard) {
       });
 
       square.addEventListener("mouseover", () => {
+        if (gameStarted) return;
         if (isChangingShip) {
           const tempSplit = square.dataset.coordinate.split(",");
           tempSplit[0] = Number(tempSplit[0]);
@@ -77,6 +88,7 @@ export function generateGrid(size, parent, gameBoard) {
       });
 
       square.addEventListener("mouseleave", () => {
+        if (gameStarted) return;
         square.classList.remove("square-invalid");
         if (isChangingShip && queueShip != null) {
           for (let k = 0; k < queueShip.neighborCoordinates.length; k += 1) {
@@ -90,6 +102,14 @@ export function generateGrid(size, parent, gameBoard) {
         }
       });
     }
+  }
+}
+
+export function toggleTurnUI() {
+  if (startGameButton.textContent === "Your Turn") {
+    startGameButton.textContent = "Computer Turn";
+  } else {
+    startGameButton.textContent = "Your Turn";
   }
 }
 
