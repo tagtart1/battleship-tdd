@@ -185,7 +185,7 @@ function Gameboard() {
       for (let i = 0; i < validCoords.length; i += 1) {
         this.setSurroundingNodesToBusy(validCoords[i]);
       }
-      _ships.push(newShip);
+
       return true;
     },
     // Returns true on successful attack, false, upon a failed attack
@@ -218,13 +218,9 @@ function Gameboard() {
       return false;
     },
 
-    get allShips() {
-      return _ships;
-    },
-
     validCoordAttack(coordinate) {
       const coord = _board[`${coordinate}`];
-      console.log(coord);
+
       if (coord === 1 || coord === 0) {
         return false;
       }
@@ -243,8 +239,15 @@ function Gameboard() {
     },
 
     allShipsSunk() {
-      for (let i = 0; i < _ships.length; i += 1) {
-        if (_ships[i].isSunk() === false) return false;
+      for (let i = 1; i <= 10; i += 1) {
+        for (let j = 1; j <= 10; j += 1) {
+          if (
+            typeof _board[`${i},${j}`] === "object" &&
+            _board[`${i},${j}`] != null
+          ) {
+            if (!_board[`${i},${j}`].isSunk()) return false;
+          }
+        }
       }
       return true;
     },
