@@ -1,5 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300ita‌​lic,400italic,500,500italic,700,700italic,900italic,900);
 
+:root {
+  --background-white: rgb(235, 235, 235);
+  --ship-color: #bea9df;
+  --miss: #c5f1ff;
+  --hit: #ff6962;
+}
+
 * {
   box-sizing: border-box;
   font-family: "Roboto", "sans-seriff";
@@ -8,11 +15,11 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: rgb(245, 245, 245);
+  background-color: var(--background-white);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 54px;
+  gap: 36px;
   position: relative;
 }
 
@@ -30,7 +37,7 @@ header {
   width: 468px;
   display: flex;
   flex-wrap: wrap;
-  background-color: aqua;
+  background-color: var(--background-white);
   gap: 2px;
 
   counter-reset: bottom-row left-column;
@@ -49,15 +56,15 @@ header {
 }
 
 .square-ship {
-  background-color: blueviolet;
+  background-color: var(--ship-color);
 }
 
 .square-invalid {
-  background-color: black;
+  background-color: var(--hit);
 }
 
 .square-hit {
-  background-color: red;
+  background-color: var(--hit);
 }
 .square-row {
   display: flex;
@@ -81,11 +88,12 @@ header {
   counter-increment: bottom-row;
   top: 50px;
   font-size: 12px;
+  font-weight: 300;
   content: counter(bottom-row, upper-alpha);
 }
 
 .square-miss {
-  background-color: yellow;
+  background-color: var(--miss);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,16 +118,38 @@ header {
   padding: 0px 24px;
   border: 1px black solid;
   cursor: pointer;
+  transition: all 0.3s;
 }
 
-.axis-flip:active {
-  font-weight: bold;
+.axis-flip:hover {
+  transform: scale(1.05);
 }
 
-.start-button {
+.board-wrapper > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
+}
+
+.board-wrapper > div > p {
+  padding: 0;
+  margin-top: 0px;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.start-button,
+.restart-button {
   font-size: 36px;
   font-weight: 200;
   padding: 0px 24px;
   border: 1px black solid;
   cursor: pointer;
+  transition: all 0.3s;
+}
+
+.active:hover {
+  transform: scale(1.05);
 }

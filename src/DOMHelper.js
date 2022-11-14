@@ -26,6 +26,7 @@ axisFlipper.addEventListener("click", () => {
 startGameButton.addEventListener("click", () => {
   if (gameStarted) return;
   gameStarted = true;
+  startGameButton.classList.remove("active");
   axisFlipper.remove();
   startGameButton.textContent = "Your Turn";
   startGameButton.style.cursor = "initial";
@@ -116,6 +117,15 @@ export function toggleTurnUI() {
 export function gameOverScreen(winner) {
   const header = document.querySelector("header");
   header.textContent = `Game over! ${winner.name} won!`;
+  const restartButton = document.createElement("button");
+  restartButton.classList.add("restart-button");
+  restartButton.textContent = "Restart Game";
+  const body = document.querySelector("body");
+  body.appendChild(restartButton);
+
+  restartButton.addEventListener("click", () => {
+    window.location.reload();
+  });
 }
 
 export function hitSquareElement(coordinate, boardElem) {
